@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Call Trigger</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Trigger a Call</h1>
+    <input type="text" id="phone-number" placeholder="Enter phone number" />
+    <button onclick="makeCall()">Call Now</button>
+  </div>
+  <script>
+    async function makeCall() {
+      const phoneNumber = document.getElementById('phone-number').value;
+
+      try {
+        const response = await fetch('/make-call', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ to: phoneNumber }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          alert('Call initiated successfully! Call SID: ' + result.callSid);
+        } else {
+          alert('Error initiating call: ' + result.error);
+        }
+      } catch (error) {
+        alert('Network error: ' + error.message);
+      }
+    }
+  </script>
+</body>
+</html>
